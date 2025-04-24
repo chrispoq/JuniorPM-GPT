@@ -40,12 +40,14 @@ def create_jira():
         auth=HTTPBasicAuth(EMAIL, API_TOKEN),
         headers={"Accept": "application/json", "Content-Type": "application/json"}
     )
+    
+print("[JIRA PAYLOAD]", json.dumps(payload, indent=2), flush=True)
+print("[JIRA RESPONSE]", res.status_code, res.text, flush=True)
+
 
     return jsonify(res.json()), res.status_code
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
-
-print("REQUEST BODY:", data)
 
