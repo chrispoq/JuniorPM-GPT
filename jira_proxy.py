@@ -41,8 +41,8 @@ def create_jira():
         headers={"Accept": "application/json", "Content-Type": "application/json"}
     )
     
-print("[JIRA PAYLOAD]", json.dumps(payload, indent=2), flush=True)
-print("[JIRA RESPONSE]", res.status_code, res.text, flush=True)
+    print("[JIRA PAYLOAD]", json.dumps(payload, indent=2), flush=True)
+    print("[JIRA RESPONSE]", res.status_code, res.text, flush=True)
 
 
     return jsonify(res.json()), res.status_code
