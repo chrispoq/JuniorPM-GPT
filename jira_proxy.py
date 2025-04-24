@@ -1,16 +1,22 @@
-from flask import Flask, request, jsonify
+import os
+from flask import Flask, request, jsonify, abort
 import requests
 from requests.auth import HTTPBasicAuth
 
 app = Flask(__name__)
 
-# Your JIRA config
-JIRA_URL = "https://poqcommerce.atlassian.net"
-API_TOKEN = "ATATT3xFfGF0mzeWNpeLkWZ1r6Z_08h6b_uY4-FJYzLwVwl475wRnDj0DqYsK3eVD32q1hoIXAZnNez7u71163cW_6tQdQmT45cMMJm2hmJu5C8S79gPy7BmxKcc0S2t0bA3osBFdWBOuwDUOao4-NdFbmHw5lmVJ3yLTh8WKNwX9sPV7CG5pOI=3AE6ABA1"
-EMAIL = "chris@poqcommerce.com"
+# Load secrets from environment
+JIRA_URL = os.getenv("JIRA_URL")
+API_TOKEN = os.getenv("API_TOKEN")
+EMAIL = os.getenv("EMAIL")
+GPT_SECRET = os.getenv("GPT_SECRET")  # Add this
 
 @app.route("/create-jira", methods=["POST"])
 def create_jira():
+    auth_header = request.headers.get("X-GPT-SECRET")
+    if auth_header != GPT_SECRET:
+        abort(403, description="Forbidden: Invalid GPT secret")
+
     data = request.json
     payload = {
         "fields": {
@@ -27,6 +33,3 @@ def create_jira():
         headers={"Accept": "application/json", "Content-Type": "application/json"}
     )
     return jsonify(res.json()), res.status_code
-
-if __name__ == "__main__":
-    app.run(port=5000)
