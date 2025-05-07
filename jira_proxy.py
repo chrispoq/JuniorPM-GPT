@@ -28,7 +28,7 @@ def create_jira():
         "fields": {
             "project": {"key": data["projectKey"]},
             "summary": data["summary"],
-            "description": data["description"],
+            "description": data["ticketContent"], # map ticketContent to description
             "issuetype": {"name": data["issueType"]}
         }
     }
