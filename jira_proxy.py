@@ -7,8 +7,11 @@ from requests.auth import HTTPBasicAuth
 app = Flask(__name__)
 
 GPT_SECRET = os.getenv("GPT_SECRET")
-JIRA_URL = os.getenv("JIRA_URL")
+jira_url = data.get("jiraUrl")
 
+if not jira_url:
+    return jsonify({"error": "Missing jiraUrl"}), 400
+    
 @app.route("/create-jira", methods=["POST"])
 def create_jira():
     # Authenticate GPT
@@ -36,7 +39,7 @@ def create_jira():
 
     # Send to JIRA using user's credentials
     res = requests.post(
-        f"{JIRA_URL}/rest/api/3/issue",
+        f"{jira_url}/rest/api/3/issue",
         json=payload,
         auth=HTTPBasicAuth(data["jiraEmail"], data["jiraToken"]),
         headers={"Accept": "application/json", "Content-Type": "application/json"}
