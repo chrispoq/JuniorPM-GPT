@@ -7,6 +7,7 @@ from requests.auth import HTTPBasicAuth
 app = Flask(__name__)
 
 GPT_SECRET = os.getenv("GPT_SECRET")
+JIRA_URL = os.getenv("JIRA_URL")
 
 @app.route("/create-jira", methods=["POST"])
 def create_jira():
