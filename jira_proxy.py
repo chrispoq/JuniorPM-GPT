@@ -35,7 +35,7 @@ def create_jira():
 
     # Send to JIRA using user's credentials
     res = requests.post(
-        f"{JIRA_URL}/rest/api/3/issue"
+        f"{JIRA_URL}/rest/api/3/issue",
         json=payload,
         auth=HTTPBasicAuth(data["jiraEmail"], data["jiraToken"]),
         headers={"Accept": "application/json", "Content-Type": "application/json"}
