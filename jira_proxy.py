@@ -18,7 +18,7 @@ def create_jira():
     data = request.json or {}
 
     # Validate required fields
-    required_fields = ["summary", "description", "jiraEmail", "jiraToken", "projectKey", "issueType"]
+    required_fields = ["summary", "ticketContent", "jiraEmail", "jiraToken", "projectKey", "issueType"]
     missing = [field for field in required_fields if field not in data]
     if missing:
         return jsonify({"error": f"Missing required fields: {', '.join(missing)}"}), 400
