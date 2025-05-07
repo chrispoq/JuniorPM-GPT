@@ -8,9 +8,6 @@ app = Flask(__name__)
 
 GPT_SECRET = os.getenv("GPT_SECRET")
 jira_url = data.get("jiraUrl")
-
-if not jira_url:
-    return jsonify({"error": "Missing jiraUrl"}), 400
     
 @app.route("/create-jira", methods=["POST"])
 def create_jira():
