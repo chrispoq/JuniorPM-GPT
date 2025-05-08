@@ -7,8 +7,7 @@ from requests.auth import HTTPBasicAuth
 app = Flask(__name__)
 
 GPT_SECRET = os.getenv("GPT_SECRET")
-jira_url = data.get("jiraUrl")
-    
+
 @app.route("/create-jira", methods=["POST"])
 def create_jira():
     # Authenticate GPT
@@ -19,17 +18,20 @@ def create_jira():
     data = request.json or {}
 
     # Validate required fields
-    required_fields = ["summary", "ticketContent", "jiraEmail", "jiraToken", "projectKey", "issueType"]
+    required_fields = ["summary", "ticketContent", "jiraEmail", "jiraToken", "projectKey", "issueType", "jiraUrl"]
     missing = [field for field in required_fields if field not in data]
     if missing:
         return jsonify({"error": f"Missing required fields: {', '.join(missing)}"}), 400
+
+    # Now safe to use
+    jira_url = data["jiraUrl"]
 
     # Build JIRA payload
     payload = {
         "fields": {
             "project": {"key": data["projectKey"]},
             "summary": data["summary"],
-            "description": data["ticketContent"], # map ticketContent to description
+            "description": data["ticketContent"],  # map ticketContent to description
             "issuetype": {"name": data["issueType"]}
         }
     }
